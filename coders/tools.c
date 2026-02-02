@@ -6,7 +6,7 @@
 /*   By: kkraft <kkraft@student42>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 16:34:06 by sacrifist         #+#    #+#             */
-/*   Updated: 2026/02/02 15:58:03 by kkraft           ###   ########.fr       */
+/*   Updated: 2026/02/02 18:14:35 by kkraft           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,28 +20,28 @@ long long	get_time_in_ms(void)
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
-/*void	ft_sleep(long long time_in_ms, t_table *table)
-{
-	long long	sleep;
+// void	ft_sleep(long long time_in_ms, t_table *table)
+// {
+// 	long long	sleep;
 
-	sleep = get_time_in_ms() + time_in_ms;
-	while (get_time_in_ms() < sleep)
-	{
-		if (pthread_mutex_lock(&table->end_lock) != 0)
-			return ;
-		if (table->simulation_end)
-		{
-			pthread_mutex_unlock(&table->end_lock);
-			return ;
-		}
-		if (pthread_mutex_unlock(&table->end_lock) != 0)
-			return ;
-		usleep(100);
-	}
-	return ;
-}*/
+// 	sleep = get_time_in_ms() + time_in_ms;
+// 	while (get_time_in_ms() < sleep)
+// 	{
+// 		if (pthread_mutex_lock(&table->end_lock) != 0)
+// 			return ;
+// 		if (table->simulation_end)
+// 		{
+// 			pthread_mutex_unlock(&table->end_lock);
+// 			return ;
+// 		}
+// 		if (pthread_mutex_unlock(&table->end_lock) != 0)
+// 			return ;
+// 		usleep(200);
+// 	}
+// 	return ;
+// }
 
-void	print_state(t_coder *coder, char *str)
+int	print_state(t_coder *coder, char *str)
 {
 	long long	time;
 	int			simulation_end;
@@ -50,9 +50,10 @@ void	print_state(t_coder *coder, char *str)
 	simulation_end = coder->table->simulation_end;
 	pthread_mutex_unlock(&coder->table->end_lock);
 	if (simulation_end && strcmp("burned out", str))
-		return ;
+		return (0);
 	time = get_time_in_ms() - coder->table->start_time;
 	pthread_mutex_lock(&coder->table->print_lock);
 	printf("%lli %d %s\n", time, coder->id, str);
 	pthread_mutex_unlock(&coder->table->print_lock);
+	return (1);
 }

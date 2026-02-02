@@ -9,7 +9,6 @@ SRCS=			coders/main.c \
 				coders/parsing.c \
 				coders/threads.c \
 				coders/coders.c \
-				coders/coders_helper.c \
 				coders/monitor.c \
 				coders/tools.c
 

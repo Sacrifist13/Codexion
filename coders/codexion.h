@@ -6,7 +6,7 @@
 /*   By: kkraft <kkraft@student42>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 16:20:35 by sacrifist         #+#    #+#             */
-/*   Updated: 2026/02/02 16:43:39 by kkraft           ###   ########.fr       */
+/*   Updated: 2026/02/02 18:15:07 by kkraft           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int			end_threads(t_table *table);
 
 /* -- PART 3 - CODER'S ROUTINE - coders.c, coders_helper.c -- */
 void		*coder_routine(void *arg);
-int			compile(t_coder *c);
 
 /* -- PART 4 - MONITOR ROUTINE - monitor.c -- */
 void		*monitor_routine(void *arg);
@@ -82,4 +81,4 @@ void		*monitor_routine(void *arg);
 /* -- PART TOOLS - tools.c -- */
 long long	get_time_in_ms(void);
 void		ft_sleep(long long time_in_ms, t_table *table);
-void		print_state(t_coder *coder, char *str);
+int			print_state(t_coder *coder, char *str);

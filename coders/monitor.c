@@ -6,7 +6,7 @@
 /*   By: kkraft <kkraft@student42>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 16:30:10 by sacrifist         #+#    #+#             */
-/*   Updated: 2026/02/02 15:35:14 by kkraft           ###   ########.fr       */
+/*   Updated: 2026/02/02 17:50:18 by kkraft           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,17 @@ void	*monitor_routine(void *arg)
 {
 	t_table	*table;
 	int		i;
+	int		simulation_end;
 
 	table = (t_table *)arg;
 	while (1)
 	{
 		i = -1;
+		pthread_mutex_lock(&table->end_lock);
+		simulation_end = table->simulation_end;
+		pthread_mutex_unlock(&table->end_lock);
+		if (simulation_end)
+			return (NULL);
 		while (++i < table->number_of_coders)
 		{
 			if (check_burnout(table, &table->coders[i]))
