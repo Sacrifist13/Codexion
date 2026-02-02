@@ -6,13 +6,13 @@
 /*   By: kkraft <kkraft@student42>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/01 08:59:08 by sacrifist         #+#    #+#             */
-/*   Updated: 2026/02/02 14:26:52 by kkraft           ###   ########.fr       */
+/*   Updated: 2026/02/02 15:27:42 by kkraft           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-/*static void	add_request_edf(t_dongle *d, int id, long long burnout_time)
+static void	add_request_edf(t_dongle *d, int id, long long burnout_time)
 {
 	t_request	tmp;
 
@@ -37,7 +37,7 @@
 			d->queue[1] = tmp;
 		}
 	}
-}*/
+}
 
 static int	is_active(t_coder *coder)
 {
@@ -67,10 +67,19 @@ static void	add_request_fifo(t_dongle *d, int id)
 
 static int try_take_dongle(t_coder *coder, t_dongle *d)
 {
+	long long last_compile_time;
 	while (is_active(coder))
 	{
 		pthread_mutex_lock(&d->lock);
-		add_request_fifo(d, coder->id);
+		if (coder->table->scheduler)
+		{
+			pthread_mutex_lock(&coder->last_compile_lock);
+			last_compile_time = coder->last_compile_time;
+			pthread_mutex_unlock(&coder->last_compile_lock);
+			add_request_edf(d, coder->id, last_compile_time + coder->table->time_to_burnout);
+		}
+		else
+			add_request_fifo(d, coder->id);
 		if (d->is_available && d->queue[0].id == coder->id 
 			&& d->unlock_time <= get_time_in_ms())
 		{
@@ -123,7 +132,13 @@ void	*coder_routine(void *arg)
 			{
 				print_state(c, "has taken a dongle");
 				print_state(c, "is compiling");
+				pthread_mutex_lock(&c->last_compile_lock);
+				c->last_compile_time = get_time_in_ms();
+				pthread_mutex_unlock(&c->last_compile_lock);
 				usleep(c->table->time_to_compile * 1000);
+				pthread_mutex_lock(&c->nb_compiles_lock);
+				c->nb_compiles++;
+				pthread_mutex_unlock(&c->nb_compiles_lock);
 				pop(c, first);
 				pop(c, second);
 				print_state(c, "is debugging");
@@ -132,7 +147,12 @@ void	*coder_routine(void *arg)
 				usleep(c->table->time_to_refactor * 1000);
 			}
 			else
+			{
+				pthread_mutex_lock(&first->lock);
+				first->is_available = 1;
+				pthread_mutex_unlock(&first->lock);
 				return (NULL);
+			}
 		}
 		else
 			return (NULL);

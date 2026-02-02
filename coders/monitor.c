@@ -6,7 +6,7 @@
 /*   By: kkraft <kkraft@student42>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 16:30:10 by sacrifist         #+#    #+#             */
-/*   Updated: 2026/02/02 14:24:29 by kkraft           ###   ########.fr       */
+/*   Updated: 2026/02/02 15:28:56 by kkraft           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,11 @@ static int	check_compiles(t_table *table)
 		pthread_mutex_unlock(&table->coders[i].nb_compiles_lock);
 
 		if (nb_compiles < table->number_of_compiles_required)
-		{
-			pthread_mutex_lock(&table->end_lock);
-			table->simulation_end = 1;
-			pthread_mutex_unlock(&table->end_lock);
 			return (0);
-		}
 	}
+	pthread_mutex_lock(&table->end_lock);
+	table->simulation_end = 1;
+	pthread_mutex_unlock(&table->end_lock);
 	return (1);
 }
 
@@ -64,16 +62,15 @@ void	*monitor_routine(void *arg)
 		{
 			if (check_burnout(table, &table->coders[i]))
 			{
+				print_state(&table->coders[i], "burned out");
 				pthread_mutex_lock(&table->end_lock);
 				table->simulation_end = 1;
 				pthread_mutex_unlock(&table->end_lock);
-				pthread_mutex_lock(&table->print_lock);
 				print_state(&table->coders[i], "burned out");
-				return (pthread_mutex_unlock(&table->print_lock), NULL);
+				return ( NULL);
 			}
 		}
 		if (check_compiles(table))
 			return (NULL);
-		usleep(100);
 	}
 }
