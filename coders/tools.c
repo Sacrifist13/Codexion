@@ -6,7 +6,7 @@
 /*   By: kkraft <kkraft@student42>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 16:34:06 by sacrifist         #+#    #+#             */
-/*   Updated: 2026/02/02 11:36:50 by kkraft           ###   ########.fr       */
+/*   Updated: 2026/02/02 15:58:03 by kkraft           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,13 @@ long long	get_time_in_ms(void)
 void	print_state(t_coder *coder, char *str)
 {
 	long long	time;
+	int			simulation_end;
 
+	pthread_mutex_lock(&coder->table->end_lock);
+	simulation_end = coder->table->simulation_end;
+	pthread_mutex_unlock(&coder->table->end_lock);
+	if (simulation_end && strcmp("burned out", str))
+		return ;
 	time = get_time_in_ms() - coder->table->start_time;
 	pthread_mutex_lock(&coder->table->print_lock);
 	printf("%lli %d %s\n", time, coder->id, str);

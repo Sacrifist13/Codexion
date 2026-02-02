@@ -6,7 +6,7 @@
 /*   By: kkraft <kkraft@student42>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 16:20:35 by sacrifist         #+#    #+#             */
-/*   Updated: 2026/02/02 14:27:16 by kkraft           ###   ########.fr       */
+/*   Updated: 2026/02/02 16:43:39 by kkraft           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,9 @@ t_table		*init_simulation_rules(int argc, char **argv);
 int			start_threads(t_table *table);
 int			end_threads(t_table *table);
 
-/* -- PART 3 - CODER'S ROUTINE - coders.c -- */
+/* -- PART 3 - CODER'S ROUTINE - coders.c, coders_helper.c -- */
 void		*coder_routine(void *arg);
+int			compile(t_coder *c);
 
 /* -- PART 4 - MONITOR ROUTINE - monitor.c -- */
 void		*monitor_routine(void *arg);

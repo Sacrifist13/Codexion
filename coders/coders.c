@@ -6,7 +6,7 @@
 /*   By: kkraft <kkraft@student42>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/01 08:59:08 by sacrifist         #+#    #+#             */
-/*   Updated: 2026/02/02 15:27:42 by kkraft           ###   ########.fr       */
+/*   Updated: 2026/02/02 16:45:39 by kkraft           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,3 +158,9 @@ void	*coder_routine(void *arg)
 			return (NULL);
 	}
 }
+
+/* -- FACTORISATION DE LA FONCTION -- */
+
+/* -- VERIFICATION DU FLAG DE END A CHAQUE ETAPE -- */
+
+/* -- SLEEP PLUS PETIT SI ON VA BURNOUT -- */
