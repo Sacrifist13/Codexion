@@ -6,7 +6,7 @@
 /*   By: kkraft <kkraft@student42>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 16:20:35 by sacrifist         #+#    #+#             */
-/*   Updated: 2026/02/02 09:48:11 by kkraft           ###   ########.fr       */
+/*   Updated: 2026/02/02 11:02:03 by kkraft           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ typedef struct s_dongle
 
 typedef struct s_coder
 {
-	pthread_mutex_t	compile_lock;
+	pthread_mutex_t	nb_compiles_lock;
+	pthread_mutex_t	last_compile_lock;
 	pthread_t		thread_id;
 	int				nb_compiles;
 	int				id;

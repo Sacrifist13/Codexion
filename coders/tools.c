@@ -6,7 +6,7 @@
 /*   By: kkraft <kkraft@student42>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 16:34:06 by sacrifist         #+#    #+#             */
-/*   Updated: 2026/02/02 07:48:10 by kkraft           ###   ########.fr       */
+/*   Updated: 2026/02/02 11:36:50 by kkraft           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ long long	get_time_in_ms(void)
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
-void	ft_sleep(long long time_in_ms, t_table *table)
+/*void	ft_sleep(long long time_in_ms, t_table *table)
 {
 	long long	sleep;
 
@@ -39,12 +39,14 @@ void	ft_sleep(long long time_in_ms, t_table *table)
 		usleep(100);
 	}
 	return ;
-}
+}*/
 
 void	print_state(t_coder *coder, char *str)
 {
 	long long	time;
 
 	time = get_time_in_ms() - coder->table->start_time;
+	pthread_mutex_lock(&coder->table->print_lock);
 	printf("%lli %d %s\n", time, coder->id, str);
+	pthread_mutex_unlock(&coder->table->print_lock);
 }

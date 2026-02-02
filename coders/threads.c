@@ -6,7 +6,7 @@
 /*   By: kkraft <kkraft@student42>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 16:31:56 by sacrifist         #+#    #+#             */
-/*   Updated: 2026/02/02 09:50:02 by kkraft           ###   ########.fr       */
+/*   Updated: 2026/02/02 11:09:40 by kkraft           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,10 @@ static int	init_coders(t_table	*table)
 			table->coders[i].left = &table->dongles[nb_coders - 1];
 		else
 			table->coders[i].left = &table->dongles[i - 1];
-		printf("Initialisation: Coder %d: Right: %d | Left: %d\n", i + 1, table->coders[i].right->id, table->coders[i].left->id);
 		table->coders[i].table = table;
-		if (pthread_mutex_init(&table->coders[i].compile_lock, NULL) != 0)
+		if (pthread_mutex_init(&table->coders[i].nb_compiles_lock, NULL) != 0)
+			return (0);
+		if (pthread_mutex_init(&table->coders[i].last_compile_lock, NULL) != 0)
 			return (0);
 		i++;
 	}
@@ -95,7 +96,7 @@ int	start_threads(t_table *table)
 	table->start_time = start_time;
 	while (++i < table->number_of_coders)
 	{
-		table->coders[i].last_compile_time = start_time;
+		table->coders[i].last_compile_time =  get_time_in_ms();
 		if (pthread_create(&table->coders[i].thread_id, NULL,
 				&coder_routine, (void *)&table->coders[i]) != 0)
 			return (0);
@@ -124,7 +125,9 @@ int	end_threads(t_table *table)
 			return (0);
 		if (pthread_mutex_destroy(&table->dongles[i].lock) != 0)
 			return (0);
-		if (pthread_mutex_destroy(&table->coders[i].compile_lock) != 0)
+		if (pthread_mutex_destroy(&table->coders[i].nb_compiles_lock) != 0)
+			return (0);
+		if (pthread_mutex_destroy(&table->coders[i].last_compile_lock) != 0)
 			return (0);
 	}
 	return (1);
