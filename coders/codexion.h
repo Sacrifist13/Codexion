@@ -6,11 +6,12 @@
 /*   By: kkraft <kkraft@student42>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 16:20:35 by sacrifist         #+#    #+#             */
-/*   Updated: 2026/02/02 11:02:03 by kkraft           ###   ########.fr       */
+/*   Updated: 2026/02/02 14:27:16 by kkraft           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <string.h>
 #include <pthread.h>
 #include <unistd.h>

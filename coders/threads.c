@@ -6,25 +6,11 @@
 /*   By: kkraft <kkraft@student42>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 16:31:56 by sacrifist         #+#    #+#             */
-/*   Updated: 2026/02/02 11:09:40 by kkraft           ###   ########.fr       */
+/*   Updated: 2026/02/02 12:22:37 by kkraft           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
-/* -- Init Coders (Memory and mutex) -- */
-/* -- Init Dongles (Memory and mutex) -- */
-/* -- 
-	Start threads:
-		- (init table mutex)
-		- (create all coders threads) 
-		- (create monitor threads)
-		- (join monitor)
-
-	End threads:
-		- (join all coders's threads)
-		- (destroy all elements)
--- */
 
 static int	init_dongles(t_table *table)
 {
